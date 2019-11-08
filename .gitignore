@@ -8,6 +8,9 @@
 .AppleDouble
 .LSOverride
 
+# large input files
+sensor_data.json
+
 # Icon must end with two \r
 Icon
 

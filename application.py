@@ -1,14 +1,12 @@
 #!/usr/bin/env python
-# __author__ = "Ronie Martinez"
-# __copyright__ = "Copyright 2019, Ronie Martinez"
-# __credits__ = ["Ronie Martinez"]
-# __license__ = "MIT"
-# __maintainer__ = "Ronie Martinez"
-# __email__ = "ronmarti18@gmail.com"
-import json
 import random
 import time
+import csv
+import numpy as np
+import json
 from datetime import datetime
+
+from backend import DB, Keeper
 
 from flask import Flask, Response, render_template
 
@@ -23,14 +21,25 @@ def index():
 
 @application.route('/chart-data')
 def chart_data():
-    def generate_random_data():
-        while True:
+    def process_sensor():
+        db = DB("input/sensor_data.json")
+        keeper = Keeper("70B3D58FF100D72A")
+
+        sensors = db.get_sensor_data_from_barn(keeper.barn_id)
+        for dt in sensors:
+            sensor_data = sensors[dt]
+            keeper.update(sensor_data)
             json_data = json.dumps(
-                {'time': datetime.now().strftime('%Y-%m-%d %H:%M:%S'), 'value': random.random() * 100})
+                {
+                    'time': dt,
+                    'sensor_data': keeper.latest_sensor,
+                    'status': keeper.status
+                }
+            )
             yield f"data:{json_data}\n\n"
             time.sleep(1)
 
-    return Response(generate_random_data(), mimetype='text/event-stream')
+    return Response(process_sensor(), mimetype='text/event-stream')
 
 
 if __name__ == '__main__':
