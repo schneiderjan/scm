@@ -3,6 +3,7 @@ from time import sleep
 import json
 from streamz import Stream
 from streamz.dataframe import DataFrame
+import matplotlib.pyplot as plt
 
 pd.set_option('display.max_rows', 500)
 pd.set_option('display.max_columns', 500)
@@ -23,10 +24,22 @@ class FileReader:
         # print(fr.data.groupby(by='Filename_Idx')['Barn_Name'].describe())
         # self.data = self.data[self.data.Filename_Idx == '70B3D58FF100D68E']
         self.data['ts'] = self.data.Date + " " + self.data.Time
+        # self.data['ts'] = pd.to_datetime(self.data['ts'])
         self.data = self.data.drop(['Date', 'Time', 'ID', 'Filename_Date'], axis=1)
         print(self.data.columns)
         self.data.columns = ['nh3', 'co2', 'in_humidity', 'in_temp', 'out_humidity', 'out_temp', 'barn_name', 'file_id',
                              'ts']
+        print("Missing values: ")
+        print(len(self.data.index)-self.data.count())
+
+        # print(self.data.nh3)
+        self.data = self.data.interpolate(method='linear')
+        # print(self.data.nh3)
+
+        print("Missing values: ")
+        print(len(self.data.index) - self.data.count())
+
+
 
     def make_json(self):
         self.data = self.data.sort_values(by=['file_id', 'ts'])
