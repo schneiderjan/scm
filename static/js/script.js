@@ -340,7 +340,7 @@ $(document).ready(function () {
       configTemperature.data.labels.push(new Date(data.time));
       configTemperature.data.datasets[0].data.push(data.sensor_data.in_temp);
       configTemperature.data.datasets[1].data.push(data.sensor_data.out_temp);
-      switch(data.status.temperature) {
+      switch(data.status.in_temp) {
           case -1:
           case 0:
               if ($("#cardTemperature").hasClass("border-all-warning")) {

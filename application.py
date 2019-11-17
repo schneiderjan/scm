@@ -23,7 +23,7 @@ def index():
 def chart_data():
     def process_sensor():
         db = DB("input/sensor_data.json")
-        keeper = Keeper("70B3D58FF100D72A")
+        keeper = Keeper("70B3D58FF100D72A", "config/config.yaml")
 
         sensors = db.get_sensor_data_from_barn(keeper.barn_id)
         for dt in sensors:

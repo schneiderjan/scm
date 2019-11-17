@@ -1,0 +1,13 @@
+sensor:
+  nh3:
+    orange: 2800
+    red: 3200
+  co2:
+    orange: 3200
+    red: 2800
+  in_temp:
+    orange: 28
+    red: 31
+  in_humidity:
+    orange:
+    red:

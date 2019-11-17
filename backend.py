@@ -1,5 +1,6 @@
 import numpy as np
 import json
+import yaml
 
 STATUS_EMPTY = -1
 STATUS_OK = 0
@@ -18,7 +19,7 @@ class DB(object):
 
 
 class Keeper(object):
-    def __init__(self, barn_id):
+    def __init__(self, barn_id, config_file):
         self.barn_id = barn_id
         self.status = {
             "co2": STATUS_EMPTY,
@@ -33,45 +34,39 @@ class Keeper(object):
             "in_humidity": None,
             "out_humidity": None
         }
+        self.config = self.read_config(config_file)
+
+    def read_config(self, config_file):
+        with open(config_file, "r") as config_file:
+            config = yaml.load(config_file, Loader=yaml.FullLoader)
+        return config
 
     def update(self, sensors):
         for level in sensors:
             if sensors[level] is not None:
                 self.latest_sensor[level] = sensors[level]
-        # CO2 logic
-        if self.latest_sensor["co2"] is not None:
-            if self.latest_sensor["co2"] > 3200:
-                self.status["co2"] = STATUS_RED
-            elif self.latest_sensor["co2"] > 2800:
-                self.status["co2"] = STATUS_ORANGE
+
+        for sensor in self.config["sensor"]:
+            sensor_config = self.config["sensor"][sensor]
+            if self.latest_sensor[sensor] is not None:
+                if sensor_config["red"] is not None and self.latest_sensor[sensor] > sensor_config["red"]:
+                    self.status[sensor] = STATUS_RED
+                elif sensor_config["orange"] is not None and self.latest_sensor[sensor] > sensor_config["orange"]:
+                    self.status[sensor] = STATUS_ORANGE
+                else:
+                    self.status[sensor] = STATUS_OK
             else:
-                self.status["co2"] = STATUS_OK
-        # Ammonia logic
-        if self.latest_sensor["nh3"] is not None:
-            if self.latest_sensor["nh3"] > 40:
-                self.status["nh3"] = STATUS_RED
-            elif self.latest_sensor["nh3"] > 10:
-                self.status["nh3"] = STATUS_ORANGE
-            else:
-                self.status["nh3"] = STATUS_OK
-        # Temperature logic
-        if self.latest_sensor["in_temp"] is not None:
-            if self.latest_sensor["in_temp"] > 31:
-                self.status["temperature"] = STATUS_RED
-            elif self.latest_sensor["in_temp"] > 28:
-                self.status["temperature"] = STATUS_ORANGE
-            else:
-                self.status["temperature"] = STATUS_OK
+                self.status[sensor] = STATUS_EMPTY
 
 
 def test():
     db = DB("input/sensor_data.json")
-    keeper = Keeper("70B3D58FF100D72A")
+    keeper = Keeper("70B3D58FF100D72A", "config/config.yaml")
 
     sensors = db.get_sensor_data_from_barn(keeper.barn_id)
     for dt in sensors:
         sensor_data = sensors[dt]
-        keeper.update_status(sensor_data)
+        keeper.update(sensor_data)
         print(sensor_data)
         break
 
