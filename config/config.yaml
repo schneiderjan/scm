@@ -2,12 +2,20 @@ sensor:
   nh3:
     orange: 10
     red: 40
+    cumulative-orange-to-alert: 24
+    cumulative-red-to-alert: 3
   co2:
     orange: 3200
     red: 2800
+    cumulative-orange-to-alert: 12
+    cumulative-red-to-alert: 2
   in_temp:
     orange: 28
     red: 31
+    cumulative-orange-to-alert: 12
+    cumulative-red-to-alert: 2
   in_humidity:
     orange: 75
     red: 85
+    cumulative-orange-to-alert: 12
+    cumulative-red-to-alert: 2

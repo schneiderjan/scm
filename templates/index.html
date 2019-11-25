@@ -9,7 +9,7 @@
   <meta name="description" content="">
   <meta name="author" content="">
 
-  <title>Barn ABC Amazing Dashboard</title>
+  <title>{{ barn.name }} Amazing Barn Dashboard</title>
 
   <!-- Custom fonts for this template-->
     <link href="{{ url_for('static', filename='fonts/all.css') }}" rel="stylesheet" type="text/css">
@@ -42,72 +42,28 @@
           <!-- Topbar Navbar -->
           <ul class="navbar-nav ml-auto">
 
-            <!-- Nav Item - Search Dropdown (Visible Only XS) -->
-            <li class="nav-item dropdown no-arrow d-sm-none">
-              <a class="nav-link dropdown-toggle" href="#" id="searchDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <i class="fas fa-search fa-fw"></i>
-              </a>
-              <!-- Dropdown - Messages -->
-              <div class="dropdown-menu dropdown-menu-right p-3 shadow animated--grow-in" aria-labelledby="searchDropdown">
-                <form class="form-inline mr-auto w-100 navbar-search">
-                  <div class="input-group">
-                    <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2">
-                    <div class="input-group-append">
-                      <button class="btn btn-primary" type="button">
-                        <i class="fas fa-search fa-sm"></i>
-                      </button>
-                    </div>
-                  </div>
-                </form>
-              </div>
-            </li>
-
             <!-- Nav Item - Alerts -->
             <li class="nav-item dropdown no-arrow mx-1">
-              <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <a id="alert-center-button"  class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <i class="fas fa-bell fa-fw"></i>
                 <!-- Counter - Alerts -->
-                <span class="badge badge-danger badge-counter">1</span>
+                <span id="alert-center-badge" class="badge badge-danger badge-counter d-none">0</span>
               </a>
               <!-- Dropdown - Alerts -->
               <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="alertsDropdown">
-                <h6 class="dropdown-header">
+                <h6 id="alert-center" class="dropdown-header">
                   Alerts Center
                 </h6>
-                <a class="dropdown-item d-flex align-items-center" href="#">
-                  <div class="mr-3">
-                    <div class="icon-circle bg-danger">
-                      <i class="fas fa-exclamation-triangle text-white"></i>
-                    </div>
-                  </div>
-                  <div>
-                    <div class="small text-gray-500">50 minutes ago</div>
-                      <div class="font-weight-bold">
-                        Dangerous level of ammonia: 50ppm.
-                      </div>
-                  </div>
-                </a>
-                <a class="dropdown-item d-flex align-items-center" href="#">
-                  <div class="mr-3">
-                    <div class="icon-circle bg-warning">
-                      <i class="fas fa-exclamation-triangle text-white"></i>
-                    </div>
-                  </div>
-                  <div>
-                    <div class="small text-gray-500">2 hours ago</div>
-                    Warning level of CO2: 3000ppm.
-                  </div>
-                </a>
-                <a class="dropdown-item text-center small text-gray-500" href="#">Show All Alerts</a>
+                <a class="dropdown-item text-center small text-gray-500" href="#">See previous alerts.</a>
               </div>
             </li>
 
             <!-- Nav Item - Messages -->
             <li class="nav-item dropdown no-arrow mx-1">
-              <a class="nav-link dropdown-toggle" href="#" id="messagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <a id="message-center-button" class="nav-link dropdown-toggle" href="#" id="messagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <i class="fas fa-envelope fa-fw"></i>
                 <!-- Counter - Messages -->
-                <span class="badge badge-danger badge-counter">1</span>
+                <span id="message-center-badge" class="badge badge-danger badge-counter">1</span>
               </a>
               <!-- Dropdown - Messages -->
               <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="messagesDropdown">
@@ -120,23 +76,13 @@
                       <i class="fas fa-chart-bar text-white"></i>
                     </div>
                   </div>
-                  <div class="font-weight-bold">
-                    Summary of November 6, 2019 is here. Click to see.
-                    <div class="small text-gray-500">System · 58m</div>
-                  </div>
-                </a>
-                <a class="dropdown-item d-flex align-items-center" href="#">
-                  <div class="dropdown-list-image mr-3">
-                    <div class="icon-circle bg-success">
-                      <i class="fas fa-chart-line text-white"></i>
-                    </div>
-                  </div>
                   <div>
-                    Summary of October is here. Click to see.
-                    <div class="small text-gray-500">System · 7d</div>
+                    Summary of June 2019 is here. Click to see.
+                    <div class="small text-gray-600">System · June 30, 23:00</div>
                   </div>
                 </a>
-                <a class="dropdown-item text-center small text-gray-500" href="#">Read More Messages</a>
+
+                <a class="dropdown-item text-center small text-gray-500 disabled" href="#">There are no more messages.</a>
               </div>
             </li>
 
@@ -145,7 +91,7 @@
             <!-- Nav Item - User Information -->
             <li class="nav-item dropdown no-arrow">
               <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <span class="mr-2 d-none d-lg-inline text-gray-600 small">Jan Heitmann Barn</span>
+                <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{ barn.name }} Barn</span>
                 <img class="img-profile rounded-circle" src="https://source.unsplash.com/CP9GGy_LkIY/60x60">
               </a>
               <!-- Dropdown - User Information -->
@@ -180,7 +126,7 @@
 
           <!-- Page Heading -->
           <div class="d-sm-flex align-items-center justify-content-between mb-4">
-            <h1 class="h3 mb-0 text-gray-800">July 2, 2019</h1>
+            <h1 id="date-top-field" class="h3 mb-0 text-gray-800"><small class="text-gray-600">Loading data...</small></h1>
           </div>
 
           <!-- Content Row -->
@@ -194,11 +140,11 @@
                       <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Ventilation</div>
                       <div class="row no-gutters align-items-center">
                         <div class="col-auto">
-                          <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">60%</div>
+                          <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">{{ barn.ventilation }}%</div>
                         </div>
                         <div class="col">
                           <div class="progress progress-sm mr-2">
-                            <div class="progress-bar bg-info" role="progressbar" style="width: 60%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                            <div class="progress-bar bg-info" role="progressbar" style="width: {{ barn.ventilation }}%" aria-valuenow="{{ barn.ventilation }}" aria-valuemin="0" aria-valuemax="100"></div>
                           </div>
                         </div>
                       </div>
@@ -217,7 +163,7 @@
                   <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
                       <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Today's weather (Hi/Lo)</div>
-                      <div class="h5 mb-0 font-weight-bold text-gray-800">28&#176;C<small>/15&#176;C</small></div>
+                      <div class="h5 mb-0 font-weight-bold text-gray-800">{{ barn.temp_high }}&#176;C<small>/{{ barn.temp_low }}&#176;C</small></div>
                     </div>
                     <div class="col-auto">
                       <i class="fas fa-sun fa-2x text-gray-300"></i>
@@ -234,7 +180,7 @@
                   <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
                       <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Yesterday Summary</div>
-                      <div class="text-s mb-0 text-gray-800">Ammonia level is alarming</div>
+                      <div class="text-s mb-0 text-gray-800">{{ barn.yesterday }}</div>
                     </div>
                     <div class="col-auto">
                       <i class="fas fa-calendar fa-2x text-gray-300"></i>
@@ -250,7 +196,7 @@
                   <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
                       <div class="text-xs font-weight-bold text-secondary text-uppercase mb-1">Suggestion</div>
-                      <div class="text-s mb-0 text-gray-800">Open ventilation to <b>70%</b></div>
+                      <div class="text-s mb-0 text-gray-800">{{ barn.suggestion }}</div>
                     </div>
                     <div class="col-auto">
                       <i class="fas fa-comments fa-2x text-gray-300"></i>
@@ -341,9 +287,23 @@
   <!-- Page level plugins -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.13.0/moment.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
-<!--  <script src="{{ url_for('static', filename='js/script.js') }}"></script>-->
   <script>
-    // Set new default font family and font color to mimic Bootstrap's default styling
+// clicks
+$("#message-center-button").click(function() {
+  if (!$("#message-center-badge").hasClass("d-none")) {
+    $("#message-center-badge").addClass("d-none");
+    $("#message-center-badge").text(0);
+  }
+});
+
+$("#alert-center-button").click(function() {
+  if (!$("#alert-center-badge").hasClass("d-none")) {
+    $("#alert-center-badge").addClass("d-none");
+    $("#alert-center-badge").text(0);
+  }
+});
+
+// Set new default font family and font color to mimic Bootstrap's default styling
 Chart.defaults.global.defaultFontFamily = 'Nunito', '-apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif';
 Chart.defaults.global.defaultFontColor = '#858796';
 $(document).ready(function () {
@@ -546,11 +506,71 @@ $(document).ready(function () {
   const contextHumidity = document.getElementById('canvas-humidity').getContext('2d');
   const lineChartHumidity = new Chart(contextHumidity, configHumidity);
 
+  var format_date = function(d){
+    var month = ['January', 'February', 'March', 'April', 'May', 'June', 'July',
+                'August', 'September', 'October', 'November', 'December'];
+    var date = month[d.getMonth()] + " " + d.getDate() + ", " +  d.getFullYear();
+    return (date);
+  };
+
+  function add_zero(i) {
+    if (i < 10) {
+      i = "0" + i;
+    }
+    return i;
+  }
+
+  var format_date_time = function(d){
+    var month = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    var date = month[d.getMonth()] + " " + d.getDate()
+    return (date + ", " + add_zero(d.getHours()) + ":" + add_zero(d.getMinutes()));
+  };
+
   //Handle sensor data
-  const source = new EventSource("/chart-data");
+  const source = new EventSource("/chart-data/{{ barn.id }}");
 
   source.onmessage = function (event) {
       const data = JSON.parse(event.data);
+      $("#date-top-field").text(format_date(new Date(data.time)));
+
+      if (data.alerts.length > 0) {
+        for (i = 0; i < data.alerts.length; i++) {
+          if (data.alerts[i].status == 1) {
+            icon_color = "bg-warning";
+            message = data.alerts[i].message;
+          } else if (data.alerts[i].status == 2) {
+            icon_color = "bg-danger";
+            message = "<div class='font-weight-bold'>" + data.alerts[i].message + "</div>";
+          }
+          max_num_alerts = 5;
+          if (data.alerts[i].status > 0) {
+            alert_counter = parseInt($("#alert-center-badge").text());
+            if (alert_counter < max_num_alerts) {
+              $("#alert-center-badge").text(alert_counter+1);
+            }
+            if ($("#alert-center-badge").hasClass("d-none")) {
+              $("#alert-center-badge").removeClass("d-none");
+            }
+            timing = '<div class="small text-gray-600">' + format_date_time(new Date(data.time)) + '</div>';
+            $(
+              `<a class='dropdown-item d-flex align-items-center alert-items' href='#'>
+                <div class='mr-3'>
+                  <div class='icon-circle ` + icon_color + `'>
+                    <i class='fas fa-exclamation-triangle text-white'></i>
+                  </div>
+                </div>
+                <div>
+                  <div class='text-gray-500'>` + timing + `</div>` + message + `</div>
+              </a>`
+            ).insertAfter($("#alert-center"));
+          }
+        }
+        $(".alert-items").each(function(i, obj) {
+          if (i >= max_num_alerts) {
+            $(this).remove();
+          }
+        });
+      }
 
       //Ammonia
       if (configNh3.data.labels.length === 20) {
@@ -749,6 +769,60 @@ $(document).ready(function () {
       configHumidity.data.labels.push(new Date(data.time));
       configHumidity.data.datasets[0].data.push(data.sensor_data.in_humidity);
       configHumidity.data.datasets[1].data.push(data.sensor_data.out_humidity);
+      switch(data.status.in_humidity) {
+          case -1:
+          case 0:
+              if ($("#cardHumidity").hasClass("border-all-warning")) {
+                $("#cardHumidity").removeClass("border-all-warning");
+              }
+              if ($("#cardHumidity").hasClass("border-all-danger")) {
+                $("#cardHumidity").removeClass("border-all-danger");
+              }
+              if (!$("#cardTitleHumidity").hasClass("text-primary")) {
+                $("#cardHumidity").addClass("text-primary");
+              }
+              if ($("#cardTitleHumidity").hasClass("text-warning")) {
+                $("#cardTitleHumidity").removeClass("text-warning");
+              }
+              if ($("#cardTitleHumidity").hasClass("text-danger")) {
+                $("#cardHumidity").removeClass("text-danger");
+              }
+              break;
+          case 1:
+              if (!$("#cardHumidity").hasClass("border-all-warning")) {
+                $("#cardHumidity").addClass("border-all-warning");
+              }
+              if ($("#cardHumidity").hasClass("border-all-danger")) {
+                $("#cardHumidity").removeClass("border-all-danger");
+              }
+              if (!$("#cardTitleHumidity").hasClass("text-warning")) {
+                $("#cardTitleHumidity").addClass("text-warning");
+              }
+              if ($("#cardTitleHumidity").hasClass("text-primary")) {
+                $("#cardTitleHumidity").removeClass("text-primary");
+              }
+              if ($("#cardTitleHumidity").hasClass("text-danger")) {
+                $("#cardTitleHumidity").removeClass("text-danger");
+              }
+              break;
+          case 2:
+              if ($("#cardHumidity").hasClass("border-all-warning")) {
+                $("#cardHumidity").removeClass("border-all-warning");
+              }
+              if (!$("#cardHumidity").hasClass("border-all-danger")) {
+                $("#cardHumidity").addClass("border-all-danger");
+              }
+              if (!$("#cardTitleHumidity").hasClass("text-danger")) {
+                $("#cardTitleHumidity").addClass("text-danger");
+              }
+              if ($("#cardTitleHumidity").hasClass("text-primary")) {
+                $("#cardTitleHumidity").removeClass("text-primary");
+              }
+              if ($("#cardTitleHumidity").hasClass("text-warning")) {
+                $("#cardTitleHumidity").removeClass("text-warning");
+              }
+              break;
+      }
 
       //update all charts
       lineChartNh3.update();

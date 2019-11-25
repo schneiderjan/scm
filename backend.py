@@ -7,6 +7,20 @@ STATUS_OK = 0
 STATUS_ORANGE = 1
 STATUS_RED = 2
 
+SENSOR_CODE_TO_TEXT = {
+    "nh3": "Ammonia",
+    "co2": "Carbon Dioxyde",
+    "in_temp": "Inside Temperature",
+    "in_humidity": "Inside Humidity"
+}
+
+SENSOR_CODE_TO_TAIL = {
+    "nh3": "ppm",
+    "co2": "ppm",
+    "in_temp": "&#176;C",
+    "in_humidity": "%"
+}
+
 
 class DB(object):
     def __init__(self, file_path):
@@ -34,6 +48,29 @@ class Keeper(object):
             "in_humidity": None,
             "out_humidity": None
         }
+        self.alert_center = {
+            "co2": {
+                "orange_cumulative_counter": 0,
+                "red_cumulative_counter": 0,
+                "max": []
+            },
+            "nh3": {
+                "orange_cumulative_counter": 0,
+                "red_cumulative_counter": 0,
+                "max": []
+            },
+            "in_temp": {
+                "orange_cumulative_counter": 0,
+                "red_cumulative_counter": 0,
+                "max": []
+            },
+            "in_humidity": {
+                "orange_cumulative_counter": 0,
+                "red_cumulative_counter": 0,
+                "max": []
+            }
+        }
+        self.send_alert = []
         self.config = self.read_config(config_file)
 
     def read_config(self, config_file):
@@ -51,12 +88,39 @@ class Keeper(object):
             if self.latest_sensor[sensor] is not None:
                 if sensor_config["red"] is not None and self.latest_sensor[sensor] > sensor_config["red"]:
                     self.status[sensor] = STATUS_RED
+                    self.alert_center[sensor]["orange_cumulative_counter"] += 1
+                    self.alert_center[sensor]["red_cumulative_counter"] += 1
+                    self.alert_center[sensor]["max"].append(self.latest_sensor[sensor])
                 elif sensor_config["orange"] is not None and self.latest_sensor[sensor] > sensor_config["orange"]:
                     self.status[sensor] = STATUS_ORANGE
+                    self.alert_center[sensor]["orange_cumulative_counter"] += 1
+                    self.alert_center[sensor]["red_cumulative_counter"] = 0
+                    self.alert_center[sensor]["max"].append(self.latest_sensor[sensor])
                 else:
                     self.status[sensor] = STATUS_OK
+                    self.alert_center[sensor]["orange_cumulative_counter"] = 0
+                    self.alert_center[sensor]["red_cumulative_counter"] = 0
+                    self.alert_center[sensor]["max"] = []
             else:
                 self.status[sensor] = STATUS_EMPTY
+
+            if self.alert_center[sensor]["red_cumulative_counter"] >= sensor_config["cumulative-red-to-alert"]:
+                average_level = "{:.2f}".format(sum(self.alert_center[sensor]["max"])/len(self.alert_center[sensor]["max"]))
+                self.send_alert.append({
+                    "status": STATUS_RED,
+                    "message": "Dangerous level of " + SENSOR_CODE_TO_TEXT[sensor] + ": " + average_level + " " + SENSOR_CODE_TO_TAIL[sensor]
+                })
+                self.alert_center[sensor]["orange_cumulative_counter"] = 0
+                self.alert_center[sensor]["red_cumulative_counter"] = 0
+                self.alert_center[sensor]["max"] = []
+            elif self.alert_center[sensor]["orange_cumulative_counter"] >= sensor_config["cumulative-orange-to-alert"]:
+                average_level = "{:.2f}".format(sum(self.alert_center[sensor]["max"])/len(self.alert_center[sensor]["max"]))
+                self.send_alert.append({
+                    "status": STATUS_ORANGE,
+                    "message": "Warning level of " + SENSOR_CODE_TO_TEXT[sensor] + ": " + average_level + " " + SENSOR_CODE_TO_TAIL[sensor]
+                })
+                self.alert_center[sensor]["orange_cumulative_counter"] = 0
+                self.alert_center[sensor]["max"] = []
 
 
 def test():

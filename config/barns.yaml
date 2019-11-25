@@ -1,0 +1,10 @@
+barns:
+  - {id: "70B3D58FF100D72A", name: "Jan Heitmann", ventilation: 30, yesterday: "Ammonia level is alarming.", suggestion: "Open ventilation to 70%", temp_high: 28, temp_low: 15}
+  - {id: "70B3D58FF100D6F9", name: "Hegemann", ventilation: 50, yesterday: "Humidity is fluctuating.", suggestion: "Lower ventilation to 25%", temp_high: 24, temp_low: 12}
+  - {id: "70B3D58FF100D6A5", name: "Benneke Juergen", ventilation: 10, yesterday: "CO2 level is high.", suggestion: "Open ventilation to 50%", temp_high: 26, temp_low: 14}
+  - {id: "70B3D58FF100D6BC", name: "Hilgenkamp", ventilation: 10, yesterday: "Looks good!", suggestion: "Keep it up!", temp_high: 23, temp_low: 14}
+  - {id: "70B3D58FF100D6C1", name: "Frank Boeckmann", ventilation: 20, yesterday: "Indoor temperature too cold.", suggestion: "Open ventilation to 30%", temp_high: 29, temp_low: 19}
+  - {id: "70B3D58FF100D68E", name: "Joachim Luedemann", ventilation: 50, yesterday: "Check CO2 level.", suggestion: "Open ventilation to 70%", temp_high: 21, temp_low: 15}
+  - {id: "70B3D58FF100D715", name: "Stefan Klaus", ventilation: 40, yesterday: "Check ammonia fluctuation.", suggestion: "Open ventilation to 50%", temp_high: 23, temp_low: 13}
+  - {id: "70B3D58FF100D6D1", name: "Frank Praut", ventilation: 20, yesterday: "Looks good!", suggestion: "Good job!", temp_high: 20, temp_low: 15}
+  - {id: "70B3D58FF100D6D2", name: "Hempen", ventilation: 35, yesterday: "Looks good!", suggestion: "Good job!", temp_high: 28, temp_low: 17}
