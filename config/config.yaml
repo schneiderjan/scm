@@ -1,7 +1,7 @@
 sensor:
   nh3:
-    orange: 2800
-    red: 3200
+    orange: 10
+    red: 40
   co2:
     orange: 3200
     red: 2800
@@ -9,5 +9,5 @@ sensor:
     orange: 28
     red: 31
   in_humidity:
-    orange:
-    red:
+    orange: 75
+    red: 85
